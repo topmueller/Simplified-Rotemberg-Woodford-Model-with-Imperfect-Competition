@@ -52,7 +52,7 @@ z                 (long_name='Technology')
 g                 (long_name='Government Spending')
 zeta              (long_name='Time-varying Labor Supply Preferences')
 
-@#if time_varying_markup = 1
+@#if time_varying_markup
 mu                (long_name='Time-varying Markup')
 @#endif
 ;
@@ -127,8 +127,10 @@ k      = (1-delta) * k(-1) + delta * i;                                         
 z      = rho_z * z(-1) + sig_z * eta_z;                                             // AR(1) Technology Shock
 g      = rho_g * g(-1) + sig_g * eta_g;                                             // AR(1) Government Shock
 zeta   = rho_zeta * zeta(-1) + sig_zeta * eta_zeta;                                 // AR(1) Preference Shock
+@#if time_varying_markup
 @#if markup_shock
 mu     = rho_mu * mu(-1) + sig_mu * eta_mu;                                         // AR(1) Markup Shock
+@#endif
 @#endif
 end;
 
