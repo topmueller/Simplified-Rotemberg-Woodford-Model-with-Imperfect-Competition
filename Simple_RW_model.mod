@@ -107,7 +107,7 @@ h      = 1/phi * (w + lambda - zeta);                                           
 lambda = (1 - beta + beta * delta) * r(+1) + lambda(+1);                            // Euler Equation
 
 @#if time_varying_markup
-y      = gamma (s_K/epsilon_KH * k(-1) + s_H/epsilon_KH * (z + h));                 // Production Function
+y      = gamma * (s_K/epsilon_KH * k(-1) + s_H/epsilon_KH * (z + h));               // Production Function
 r      = s_H * (z + h - k(-1)) - mu;                                                // Capital Demand
 w      = s_K * (k(-1) - h) + s_H * z - mu;                                          // Labor Demand
 
@@ -116,7 +116,7 @@ w      = s_K * (k(-1) - h) + s_H * z - mu;                                      
 mu     = epsilon_mu * y;                                                            // Endogenous Markup
 @#endif
 @#else
-y      = gamma (s_K/epsilon_KH * k(-1) + s_H/epsilon_KH * (z + h));                 // Production Function
+y      = gamma * (s_K/epsilon_KH * k(-1) + s_H/epsilon_KH * (z + h));               // Production Function
 r      = s_H * (z + h - k(-1));                                                     // Capital Demand
 w      = s_K * (k(-1) - h) + s_H * z;                                               // Labor Demand
 @#endif
