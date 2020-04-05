@@ -16,18 +16,17 @@ var_names = M_.endo_names;
 var_names_long = M_.endo_names_long;
 
 //get decimal number of epsilon_mu
-x     = num2str(epsilon_mu);
+x     = num2str(abs(epsilon_mu));
 num_1 = x(1);
+if epsilon_mu < 0
+num_1 = ['neg_' num_1];
+end
 if strlength(x) > 2
 num_2 = x(3);
 else
 num_2 = '0';
 end
 
-//create structure name: externalities(ext)
-@#if externalities
-num_2 = [num_2 '_ext'];
-@#endif
 
 
 //create Matlab file
@@ -70,17 +69,17 @@ xlabel('time');
 ylabel('% deviations from S.S.');
 if jj==1
 @#if preferences
-legend(sprintf('GHH preferences with \\epsilon_{\\mu} = %g', epsilon_mu), 'fontSize',10); //add legend
+legend(sprintf('GHH preferences with \\epsilon_{\\mu} = %g and \\gamma = %g', epsilon_mu, gamma), 'fontSize',10); //add legend
 @#else
-legend(sprintf('KPR preferences with \\epsilon_{\\mu} = %g', epsilon_mu), 'fontSize',10); //add legend
+legend(sprintf('KPR preferences with \\epsilon_{\\mu} = %g and \\gamma = %g', epsilon_mu, gamma), 'fontSize',10); //add legend
 @#endif
 end
 
 title([M_.endo_names_long{jj} ' (' var_names{jj} ')']); //Use variable names stored in M_.endo_names
-@#if externalities
-sgtitle('IRFs to a Preference Shock', 'fontSize',14);
+@#if time_varying_markup
+sgtitle('IRFs to a Markup Shock with Time Varying Markup', 'fontSize',14);
 @#else
-sgtitle('IRFs to a Preference Shock with Externalities', 'fontSize',14);
+sgtitle('IRFs to a Markup Shock', 'fontSize',14);
 @#endif
 
 end

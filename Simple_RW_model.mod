@@ -111,10 +111,6 @@ y      = gamma * (s_K/epsilon_KH * k(-1) + s_H/epsilon_KH * (z + h));           
 r      = s_H * (z + h - k(-1)) - mu;                                                // Capital Demand
 w      = s_K * (k(-1) - h) + s_H * z - mu;                                          // Labor Demand
 
-@#if markup_shock
-@#else
-mu     = epsilon_mu * y;                                                            // Endogenous Markup
-@#endif
 @#else
 y      = gamma * (s_K/epsilon_KH * k(-1) + s_H/epsilon_KH * (z + h));               // Production Function
 r      = s_H * (z + h - k(-1));                                                     // Capital Demand
@@ -127,11 +123,15 @@ k      = (1-delta) * k(-1) + delta * i;                                         
 z      = rho_z * z(-1) + sig_z * eta_z;                                             // AR(1) Technology Shock
 g      = rho_g * g(-1) + sig_g * eta_g;                                             // AR(1) Government Shock
 zeta   = rho_zeta * zeta(-1) + sig_zeta * eta_zeta;                                 // AR(1) Preference Shock
+
 @#if time_varying_markup
 @#if markup_shock
 mu     = rho_mu * mu(-1) + sig_mu * eta_mu;                                         // AR(1) Markup Shock
+@#else
+mu     = epsilon_mu * y;                                                            // Endogenous Markup
 @#endif
 @#endif
+
 end;
 
 
@@ -148,7 +148,9 @@ r       = 0;
 w       = 0;
 g       = 0;
 zeta    = 0;
+@#if time_varying_markup
 mu      = 0;
+@#endif
 end;
 
 // Compute the steady state
@@ -166,4 +168,9 @@ check;
 @#include "Technology_Shock.mod"
 @#include "Government_Spending_Shock.mod"
 @#include "Preference_Shock.mod"
+
+@#if time_varying_markup
+@#if markup_shock
 @#include "Markup_Shock.mod"
+@#endif
+@#endif
