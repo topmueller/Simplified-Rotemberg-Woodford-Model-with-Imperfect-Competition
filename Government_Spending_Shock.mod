@@ -15,9 +15,12 @@ var_names = M_.endo_names;
 //save var_names long
 var_names_long = M_.endo_names_long;
 
+
+//include information about markup (Constant vs. Time varying)
+@#if time_varying_markup
 //get decimal number of epsilon_mu
 x     = num2str(abs(epsilon_mu));
-num_1 = x(1);
+num_1 = ['epsilon_mu_' x(1)];
 if epsilon_mu < 0
 num_1 = ['neg_' num_1];
 end
@@ -27,6 +30,31 @@ else
 num_2 = '0';
 end
 
+num_2 = [num_2 '_tvar_mu'];
+
+// Constant Markup
+@#else
+//get decimal number of epsilon_mu
+x     = num2str(abs(gamma));
+num_1 = ['gamma_' x(1)];
+if gamma < 0
+num_1 = ['neg_' num_1];
+end
+if strlength(x) > 2
+num_2 = x(3);
+else
+num_2 = '0';
+end
+
+num_2 = [num_2 '_cons_mu'];
+@#endif
+
+
+//include information about markup_shock (Endogenous vs. Markup Shock)
+@#if markup_shock
+num_2 = [num_2 '_shock'];
+@#endif
+
 
 
 //create Matlab file
@@ -34,12 +62,12 @@ end
 if exist('GHH_irfs.mat', 'file') == 0
 	GHH_irfs = struct;
   //save IRFS
-  GHH_irfs.eta_g.(['epsilon_mu_' num_1 '_' num_2]) = oo_.irfs;
+  GHH_irfs.eta_g.([num_1 '_' num_2]) = oo_.irfs;
   save 'GHH_irfs.mat' 'GHH_irfs'  'var_names' 'var_names_long'
 else
 	load GHH_irfs.mat;
   //save IRFS
-  GHH_irfs.eta_g.(['epsilon_mu_' num_1 '_' num_2]) = oo_.irfs;
+  GHH_irfs.eta_g.([num_1 '_' num_2]) = oo_.irfs;
   save('GHH_irfs.mat', 'GHH_irfs', '-append');
 end;
 
@@ -47,12 +75,12 @@ end;
 if exist('KPR_irfs.mat', 'file') == 0
 	KPR_irfs = struct;
   //save IRFS
-  KPR_irfs.eta_g.(['epsilon_mu_' num_1 '_' num_2]) = oo_.irfs;
-  save 'KPR_irfs.mat' 'KPR_irfs'  'var_names'
+  KPR_irfs.eta_g.([num_1 '_' num_2]) = oo_.irfs;
+  save 'KPR_irfs.mat' 'KPR_irfs'  'var_names' 'var_names_long'
 else
 	load KPR_irfs.mat;
   //save IRFS
-  KPR_irfs.eta_g.(['epsilon_mu_' num_1 '_' num_2]) = oo_.irfs;
+  KPR_irfs.eta_g.([num_1 '_' num_2]) = oo_.irfs;
   save('KPR_irfs.mat', 'KPR_irfs', '-append');
 end;
 
